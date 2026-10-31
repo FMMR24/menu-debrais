@@ -1,0 +1,47 @@
+/* Carta de vinhos Ramón Freixa Porto — páginas A4 (usado pelo PDF e pela carta digital).
+   Reconstrução da carta original (Apple Pages) com as correções de 31/10/2026. Medidas em mm, tiradas do PDF original. */
+@font-face{ font-family:'Bevellier'; src:url('../fonts/Bevellier-Variable.ttf') format('truetype'); font-weight:100 900; }
+@font-face{ font-family:'Rastefani'; src:url('../fonts/Rastefani.woff2') format('woff2'); }
+
+.carta{
+  --ink:#000000; --wine:#323232; --grey:#737373; --light:#a7a7a7; --divider:#454545;
+  --left:40mm; --right:18mm;
+  --fs-title:4.92mm; --fs-head:4.23mm; --fs-sub:3.5mm; --fs-name:3.42mm; --fs-detail:3.53mm; --fs-num:3.4mm;
+}
+.carta *{ box-sizing:border-box; }
+.carta .page{ width:210mm; height:297mm; background:#fff; position:relative; overflow:hidden; }
+.carta .abs{ position:absolute; white-space:nowrap; line-height:1; }
+.carta .rast{ font-family:'Rastefani', serif; font-weight:400; font-variant-ligatures:none; font-feature-settings:'liga' 0, 'clig' 0, 'calt' 0, 'dlig' 0, 'swsh' 0; }
+.carta .bev{ font-family:'Bevellier', sans-serif; }
+.carta .t{ font-size:var(--fs-title); color:var(--ink); }
+.carta .h{ font-size:var(--fs-head); color:var(--ink); }
+.carta .s{ font-size:var(--fs-sub); color:#525252; }
+.carta .name{ font-size:var(--fs-name); font-weight:430; color:var(--wine); letter-spacing:.005em; }
+.carta .single .name{ font-weight:400; }
+.carta .detail{ font-size:var(--fs-detail); font-weight:300; color:var(--grey); }
+.carta .price{ font-size:var(--fs-name); font-weight:430; color:var(--wine); right:var(--right); }
+.carta .single .price{ font-weight:400; }
+.carta .pnum{ font-size:var(--fs-num); color:var(--light); left:0; right:0; text-align:center; }
+
+/* Capa impressa (fundo branco) */
+.carta .cover-logo{ position:absolute; left:43.5mm; top:100.5mm; width:123mm; }
+.carta .cover-sub{ font-size:6.46mm; color:#525252; left:0; right:0; text-align:center; letter-spacing:.01em; }
+
+/* Introdução */
+.carta .intro{ position:absolute; left:var(--left); width:107.5mm; font-family:'Bevellier', sans-serif; font-size:3.43mm; line-height:4.09mm; white-space:normal; }
+.carta .intro p{ margin:0; }
+.carta .intro-t{ font-size:4.67mm; }
+.carta .map-t{ font-size:6.6mm; }
+.carta .intro.pt{ top:86.8mm; font-weight:440; color:#323232; }
+.carta .intro.en{ top:151.2mm; font-weight:330; color:#525252; }
+
+/* Índice */
+.carta .idx{ font-size:3.87mm; color:#000; }
+
+/* Separadores */
+.carta .page.dark{ background:var(--divider); }
+.carta .dark .abs{ color:#fff; left:0; right:0; text-align:center; }
+.carta .div-num{ font-size:11.2mm; }
+.carta .div-title{ font-size:10.4mm; }
+.carta .div-symbol{ position:absolute; left:94.65mm; top:235.85mm; width:20.7mm; }
+.carta .div-sub{ font-size:9.5mm; }
