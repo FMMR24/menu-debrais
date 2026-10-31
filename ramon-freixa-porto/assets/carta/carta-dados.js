@@ -1,3 +1,10 @@
+/* Carta de vinhos Ramón Freixa Porto — os vinhos (fonte única para o PDF, o Word e a carta digital).
+   Formato (uma linha por elemento):
+     = N            página de conteúdo N (número impresso no rodapé)
+     # texto        título de secção        ## texto  região        ### texto  sub-região
+     nome | preço | região · castas         vinho (a 3.ª coluna é opcional)
+   Editar só o texto entre os dois acentos graves. */
+window.CARTA_DADOS = String.raw`
 = 6
 # 01 — Vinho a Copo | Glass of Wine
 ## Espumantes | Sparkling Wine 15 cl
@@ -758,3 +765,4 @@ NV · HORÁCIO SIMÕES EXCELLENT 50 cl | 125 | Setúbal · Moscatel
 1982 · BARBEITO FRASQUEIRA BOAL 111 | 822
 1981 · D’OLIVEIRAS FRASQUEIRA VERDELHO | 903
 1978 · JUSTINO’S FRASQUEIRA TERRANTEZ | 921
+`;

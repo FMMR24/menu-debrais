@@ -6,7 +6,7 @@
 <title>Ramón Freixa Porto — Carta de Vinhos | Wine List</title>
 <meta name="description" content="Carta de vinhos Ramón Freixa Porto, no Debrais Boutique Hotel. Wine list.">
 <meta name="theme-color" content="#262524">
-<!-- Carta digital folheável. As páginas interiores são as mesmas do PDF (assets/carta/carta-dados.txt). -->
+<!-- Carta digital folheável. As páginas interiores são as mesmas do PDF (assets/carta/carta-dados.js). -->
 <link rel="stylesheet" href="assets/carta/carta.css">
 <style>
   :root{
@@ -28,13 +28,17 @@
   }
 
   .book-wrap{ perspective:2600px; width:var(--page-w); height:var(--page-h); position:relative; }
-  .book{ position:relative; width:100%; height:100%; transform-style:preserve-3d; filter:drop-shadow(0 14px 30px rgba(0,0,0,.38)); }
+  .book{ position:relative; width:100%; height:100%; transform-style:preserve-3d; }
+  /* sombra do livro num elemento fixo (um filtro sobre as folhas em 3D tornava o folhear lento) */
+  .book-wrap::before{ content:""; position:absolute; inset:0; box-shadow:0 14px 30px rgba(0,0,0,.38); }
   .leaf{
     position:absolute; inset:0; overflow:hidden;
     transform-origin:left center; transform-style:preserve-3d; backface-visibility:hidden;
     transition:transform .72s cubic-bezier(.47,.03,.17,1);
-    background:#fff;
+    background:#fff; display:none;
   }
+  /* só a folha atual e as vizinhas existem no ecrã: o navegador anima 3 folhas em vez de 53 */
+  .leaf.near{ display:block; will-change:transform; }
   .leaf.flipped{ transform:rotateY(-178deg); }
   .book.instant .leaf{ transition:none; }
   /* As páginas A4 (210 × 297 mm) são reduzidas ao tamanho do ecrã, sem mudar a proporção */
@@ -75,18 +79,12 @@
   .idx-btn{ width:auto; padding:0 16px; border-radius:20px; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; }
   .counter{ min-width:56px; text-align:center; font-size:.78rem; letter-spacing:.12em; color:#cfc9c2; font-variant-numeric:tabular-nums; }
   .stage-label{ font-weight:300; letter-spacing:.3em; text-transform:uppercase; font-size:.62rem; color:#cfc9c2; opacity:.75; text-align:center; margin:0; }
-
-  .taparea{ position:absolute; top:0; bottom:0; width:30%; cursor:pointer; z-index:500; }
-  .taparea.left{ left:0; }
-  .taparea.right{ right:0; }
 </style>
 </head>
 <body>
 
   <div class="book-wrap">
     <div class="book carta" id="book"></div>
-    <div class="taparea left" id="tapPrev"></div>
-    <div class="taparea right" id="tapNext"></div>
   </div>
 
   <div class="controls">
@@ -98,6 +96,7 @@
 
   <p class="stage-label">Deslize ou toque para folhear · Swipe or tap</p>
 
+<script src="assets/carta/carta-dados.js"></script>
 <script src="assets/carta/carta-render.js"></script>
 <script>
 (function(){
@@ -106,7 +105,8 @@
   stage.className = 'carta'; stage.style.cssText = 'position:absolute;left:-99999px;top:0';
   document.body.appendChild(stage);
 
-  fetch('assets/carta/carta-dados.txt').then(function(r){ return r.text(); }).then(function(text){
+  // Os dados vêm de carta-dados.js (script e não fetch: assim a carta também abre como ficheiro, sem servidor)
+  Promise.resolve(window.CARTA_DADOS).then(function(text){
     var res = CartaRender.build(stage, text, { img:'assets/img/', cover:'none' });
     return CartaRender.placeBaselines(stage).then(function(){ return res.pages; });
   }).then(function(pages){
@@ -137,6 +137,7 @@
 
     var prevBtn = document.getElementById('prevBtn'), nextBtn = document.getElementById('nextBtn'), counter = document.getElementById('counter');
     function render(){
+      leaves.forEach(function(l, j){ l.classList.toggle('near', j >= current - 1 && j <= current + 1); });
       prevBtn.disabled = current === 0; nextBtn.disabled = current === n - 1;
       var num = leaves[current].dataset.num;
       counter.textContent = current === 0 ? '' : (current === n - 1 ? '' : num + ' / 52');
@@ -155,16 +156,22 @@
     prevBtn.addEventListener('click', goPrev);
     nextBtn.addEventListener('click', goNext);
     document.getElementById('idxBtn').addEventListener('click', function(){ goToPage(4); });
-    document.getElementById('tapPrev').addEventListener('click', goPrev);
-    document.getElementById('tapNext').addEventListener('click', goNext);
     document.addEventListener('keydown', function(e){ if (e.key === 'ArrowRight') goNext(); if (e.key === 'ArrowLeft') goPrev(); });
 
-    // Linhas do índice: saltam para a secção (as zonas de toque laterais não cobrem o meio da página)
-    book.addEventListener('click', function(e){ var t = e.target.closest('[data-goto]'); if (t) goToPage(t.dataset.goto); });
+    // Toques na página: linha do índice -> salta para a secção; terço esquerdo -> anterior; terço direito -> seguinte.
+    // Com zoom ativo não vira a página (o toque serve para mover a vista).
+    var wrap = document.querySelector('.book-wrap');
+    function zoomed(){ return window.visualViewport && window.visualViewport.scale > 1.01; }
+    wrap.addEventListener('click', function(e){
+      if (zoomed()) return;
+      var t = e.target.closest('[data-goto]');
+      if (t){ goToPage(t.dataset.goto); return; }
+      var r = wrap.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+      if (x < 0.3) goPrev(); else if (x > 0.7) goNext();
+    });
 
     // Swipe só com um dedo e sem zoom ativo, para não chocar com o pinch-zoom
-    function zoomed(){ return window.visualViewport && window.visualViewport.scale > 1.01; }
-    var touchX = null, wrap = document.querySelector('.book-wrap');
+    var touchX = null;
     wrap.addEventListener('touchstart', function(e){ touchX = (e.touches.length === 1 && !zoomed()) ? e.touches[0].clientX : null; }, { passive:true });
     wrap.addEventListener('touchend', function(e){
       if (touchX === null) return;

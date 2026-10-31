@@ -1,7 +1,7 @@
-/* Carta de vinhos Ramón Freixa Porto — desenha as 52 páginas A4 a partir de carta-dados.txt.
+/* Carta de vinhos Ramón Freixa Porto — desenha as 52 páginas A4 a partir de carta-dados.js.
    Usado pela versão para impressão (carta-vinhos/carta.html) e pela carta digital (carta-vinhos.html).
 
-   Formato de carta-dados.txt (uma linha por elemento):
+   Formato de carta-dados.js (uma linha por elemento):
      = N            página de conteúdo N (número impresso no rodapé)
      # texto        título de secção        ## texto  região        ### texto  sub-região
      nome | preço | região · castas         vinho (a 3.ª coluna é opcional) */
