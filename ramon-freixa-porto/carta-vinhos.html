@@ -55,6 +55,8 @@
   .linen::after{ content:''; position:absolute; inset:0; box-shadow:inset 1.6mm 0 3mm -1mm rgba(0,0,0,.45); pointer-events:none; }
   /* logótipo em PNG já na cor sand (uma máscara CSS não aparecia no Safari do iPhone com a página em 3D) */
   .cover-mark{ position:absolute; left:24.5%; top:37.5%; width:51%; height:auto; display:block; }
+  /* contracapa: símbolo rf em claro, ao centro, a 80 % da altura (como no mockup) */
+  .back-symbol{ position:absolute; left:50%; top:80%; width:15%; height:auto; transform:translate(-50%, -50%); opacity:.92; display:block; }
   .lin-title{ position:absolute; left:0; right:0; top:80.6%; text-align:center; font-weight:250; text-transform:uppercase;
     font-size:calc(var(--page-w) * .0335); letter-spacing:.16em; color:#d3cec8; padding-left:.16em; }
   .lin-sub{ position:absolute; left:0; right:0; top:85.3%; text-align:center; font-weight:250; text-transform:uppercase;
@@ -119,7 +121,8 @@
     cover.innerHTML = '<img class="cover-mark" src="assets/img/rfp-marca-sand.png" alt="Ramón Freixa Porto">' +
                       '<div class="lin-title">Carta de Vinhos</div><div class="lin-sub">Wine List</div>';
     pages.forEach(function(p){ leaf(p, '', p.dataset.num); });
-    leaf(null, 'linen back', 53);   // contracapa charcoal lisa
+    var back = leaf(null, 'linen back', 53);   // contracapa charcoal com o símbolo rf
+    back.innerHTML = '<img class="back-symbol" src="assets/img/rfp-simbolo-white.png" alt="rf">';
     stage.remove();
 
     var n = leaves.length, current = 0;
