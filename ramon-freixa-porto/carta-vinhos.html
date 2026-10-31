@@ -53,11 +53,8 @@
       radial-gradient(120% 90% at 50% 40%, rgba(255,255,255,.05), rgba(0,0,0,.18));
   }
   .linen::after{ content:''; position:absolute; inset:0; box-shadow:inset 1.6mm 0 3mm -1mm rgba(0,0,0,.45); pointer-events:none; }
-  .cover-mark{
-    position:absolute; left:50%; top:37.5%; width:51%; aspect-ratio:3334/1875; transform:translateX(-50%);
-    background:#d8d3cd;
-    -webkit-mask:url('assets/img/rfp-marca-white.png') center/contain no-repeat; mask:url('assets/img/rfp-marca-white.png') center/contain no-repeat;
-  }
+  /* logótipo em PNG já na cor sand (uma máscara CSS não aparecia no Safari do iPhone com a página em 3D) */
+  .cover-mark{ position:absolute; left:24.5%; top:37.5%; width:51%; height:auto; display:block; }
   .lin-title{ position:absolute; left:0; right:0; top:80.6%; text-align:center; font-weight:250; text-transform:uppercase;
     font-size:calc(var(--page-w) * .0335); letter-spacing:.16em; color:#d3cec8; padding-left:.16em; }
   .lin-sub{ position:absolute; left:0; right:0; top:85.3%; text-align:center; font-weight:250; text-transform:uppercase;
@@ -119,7 +116,7 @@
     }
     // Capa em linho charcoal
     var cover = leaf(null, 'linen', 1);
-    cover.innerHTML = '<div class="cover-mark" role="img" aria-label="Ramón Freixa Porto"></div>' +
+    cover.innerHTML = '<img class="cover-mark" src="assets/img/rfp-marca-sand.png" alt="Ramón Freixa Porto">' +
                       '<div class="lin-title">Carta de Vinhos</div><div class="lin-sub">Wine List</div>';
     pages.forEach(function(p){ leaf(p, '', p.dataset.num); });
     leaf(null, 'linen back', 53);   // contracapa charcoal lisa
