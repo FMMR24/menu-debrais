@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ramón Freixa Porto</title>
+<meta name="theme-color" content="#262524">
+<script>
+  // Abre o menu na língua do telemóvel do cliente (PT por defeito)
+  (function(){
+    var l = (navigator.language || 'pt').slice(0,2).toLowerCase();
+    location.replace(l === 'en' ? 'menu-en.html' : l === 'es' ? 'menu-es.html' : 'menu-pt.html');
+  })();
+</script>
+<style>
+  body{ margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; gap:20px; background:#262524; font-family:sans-serif; letter-spacing:.14em; }
+  a{ color:#dcd7d4; text-decoration:none; }
+</style>
+</head>
+<body>
+  <a href="menu-pt.html">PT</a><a href="menu-en.html">EN</a><a href="menu-es.html">ES</a>
+</body>
+</html>
